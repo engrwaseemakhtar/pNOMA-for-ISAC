@@ -1,0 +1,89 @@
+
+
+clc
+clear all
+close all;
+%%%%%%%%%%%%%%%%%%%%%%
+% Rho = 0:0.1:10;
+Rho = 10;
+
+B = 15;
+alpha = 0.33;
+beta = 0.33;
+zeta = 0.33;
+eta = 0.5;
+Phi =(alpha + eta.*beta).*B;
+theta = (zeta + (1-eta).*beta).*B;
+snr_th = 0:0.1:10;
+
+epsilon = alpha +beta;
+epsilon1 = zeta +beta;
+K = snr_th./(Rho.*Phi);
+lambda = 1;
+omega = 1;
+Psi = 1;
+Mu = 1;
+%==== for pure NOMA
+Phi_noma =(eta).*B;
+theta_noma = (1-eta).*B;
+epsilon_noma = B;
+K_noma = snr_th./(Rho.*Phi_noma);
+%==== for OMA
+Phi_oma =(alpha + (beta/2)).*B;
+theta_oma = (1-eta).*B;
+epsilon_oma = 1;
+K_oma = snr_th./(Rho.*Phi_noma);
+Rho_oma = 2*Rho/B;
+%======================semi partial NOMA(NG)======================%
+f4 =1+(-1).*exp(1).^((-1).*K.*epsilon.*lambda.^(-1)).*(omega.^(-1)).^Psi.*(K.*lambda.^(-1)+theta.^(-1) ...
+  .*omega.^(-1).*Rho.^(-1)).^((-1).*Psi).*(theta.^(-1).*Rho.^(-1)).^Psi;
+% F4 = gamcdf(y,kn,theetan);
+plot(snr_th,f4,'h')
+hold on 
+% plot(snr_th,f4,'-')
+% hold on
+%======================pure  NOMA(NG)======================%
+f4 =1+(-1/2).*exp(1).^((-1).*K_noma.*epsilon_noma.*lambda.^(-1)+(1/4).*K_noma.^(-1).*theta_noma.^(-1).*lambda.* ...
+  Mu.^2.*Rho.^(-1)).*K_noma.^(-1).*pi.^(1/2).*(K_noma.*lambda.^(-1)).^(1/2).*lambda.*Mu.*(theta_noma.^(-1) ...
+  .*Rho.^(-1)).^(1/2).*erfc((1/2).*(K_noma.*lambda.^(-1)).^(-1/2).*Mu.*(theta_noma.^(-1).*Rho.^( ...
+  -1)).^(1/2));
+% F4 = gamcdf(y,kn,theetan);
+plot(snr_th,f4,'-')
+hold on 
+% plot(snr_th,f4,'-')
+% hold on
+%======================semi partial NOMA rayleigh======================%
+f4 =1+(-1/2).*exp(1).^((-1).*K.*epsilon.*lambda.^(-1)+(1/4).*K.^(-1).*theta.^(-1).*lambda.* ...
+  Mu.^2.*Rho.^(-1)).*K.^(-1).*pi.^(1/2).*(K.*lambda.^(-1)).^(1/2).*lambda.*Mu.*(theta.^(-1) ...
+  .*Rho.^(-1)).^(1/2).*erfc((1/2).*(K.*lambda.^(-1)).^(-1/2).*Mu.*(theta.^(-1).*Rho.^( ...
+  -1)).^(1/2));
+% F4 = gamcdf(y,kn,theetan);
+plot(snr_th,f4,'h')
+hold on 
+% plot(snr_th,f4,'-')
+% hold on
+%======================pure NOMA rayleigh======================%
+f4 =1+(-1/2).*exp(1).^((-1).*K_noma.*epsilon_noma.*lambda.^(-1)+(1/4).*K_noma.^(-1).*theta_noma.^(-1).*lambda.* ...
+  Mu.^2.*Rho.^(-1)).*K_noma.^(-1).*pi.^(1/2).*(K_noma.*lambda.^(-1)).^(1/2).*lambda.*Mu.*(theta_noma.^(-1) ...
+  .*Rho.^(-1)).^(1/2).*erfc((1/2).*(K_noma.*lambda.^(-1)).^(-1/2).*Mu.*(theta_noma.^(-1).*Rho.^( ...
+  -1)).^(1/2));
+% F4 = gamcdf(y,kn,theetan);
+plot(snr_th,f4,'--')
+hold on 
+% plot(snr_th,f4,'--')
+% hold on
+%======================OMA======================%
+f4 =1+(-1).*exp(1).^((-1).*lambda.*Rho_oma.^(-1).*snr_th);
+% F4 = gamcdf(y,kn,theetan);
+plot(snr_th,f4,'-')
+hold on 
+% plot(snr_th,f4,'-')
+% hold on
+hold on
+xlabel('SINR Threshold(\gamma_{th})')
+ylabel('Outage Probability (P_{out})')
+%title('PDF of U4 with ipSIC and \tau = Variable');
+legend(' Semi-partial NOMA (NG)' ,'Pure NOMA (NG)',' Semi-partial NOMA (R)' ,'Pure NOMA (R)','OMA','location','southeast');
+grid on
+xlim([0 10])
+%=================================================================================================

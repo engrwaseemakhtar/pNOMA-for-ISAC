@@ -1,0 +1,19 @@
+function [f4a,f4b,f4c] = fRayleighOutage(K,K_noma,epsilon,epsilon_noma,lambda,theta,theta_noma,Mu,Rho,Rho_oma,snr_th)
+%RAYLEIGHOUTAGE Summary of this function goes here
+%   Detailed explanation goes here
+%======================semi partial NOMA======================%
+f4a =1+(-1/2).*exp(1).^((-1).*K.*epsilon.*lambda.^(-1)+(1/4).*K.^(-1).*theta.^(-1).*lambda.* ...
+  Mu.^2.*Rho.^(-1)).*K.^(-1).*pi.^(1/2).*(K.*lambda.^(-1)).^(1/2).*lambda.*Mu.*(theta.^(-1) ...
+  .*Rho.^(-1)).^(1/2).*erfc((1/2).*(K.*lambda.^(-1)).^(-1/2).*Mu.*(theta.^(-1).*Rho.^( ...
+  -1)).^(1/2));
+%======================pure NOMA======================%
+f4b =1+(-1/2).*exp(1).^((-1).*K_noma.*epsilon_noma.*lambda.^(-1)+(1/4).*K_noma.^(-1).*theta_noma.^(-1).*lambda.* ...
+  Mu.^2.*Rho.^(-1)).*K_noma.^(-1).*pi.^(1/2).*(K_noma.*lambda.^(-1)).^(1/2).*lambda.*Mu.*(theta_noma.^(-1) ...
+  .*Rho.^(-1)).^(1/2).*erfc((1/2).*(K_noma.*lambda.^(-1)).^(-1/2).*Mu.*(theta_noma.^(-1).*Rho.^( ...
+  -1)).^(1/2));
+
+%======================OMA======================%
+f4c =1+(-1).*exp(1).^((-1).*lambda.*Rho_oma.^(-1).*snr_th);
+
+end
+

@@ -1,0 +1,65 @@
+clc
+clear all
+close all;
+I=1;
+B = 1 ; %1 Hz
+alpha = 0.33*B;
+beta = 0.33*B;
+gamma = 0.33*B;
+
+eta = 0.5; % 
+Phi = (alpha+ eta*beta); 
+theta = (1- eta);
+lambda = 1;
+Mu = [0.8 0.6 0.4 0.2]; % 0.8 0.6 0.4 0.2
+
+y = 0:0.3:10;
+% y=10*log10(y1);
+s=0;
+%======================OMA======================%
+ep2=0;
+[ k01,theeta01] = movo( Phi,theta,lambda, Mu );
+f4 = ((y.^(k01-1)).*exp(-(y./theeta01)))./((theeta01^k01)*(gamma(k01)));
+F4 = gamcdf(y,k01,theeta01);
+plot(y,F4,'h')
+hold on 
+plot(y,F4,'-')
+hold on
+%======================pure NOMA======================%
+ep2=0;f4a=0; F4a=0;f4b=0; F4b=0;f4c=0; F4c=0;
+[ k1,theeta1,k2,theeta2,k3,theeta3] = mnvn( Phi,theta,lambda, Mu  );
+f4a = ((y.^(k1-1)).*exp(-(y./theeta1)))./((theeta1^k1)*(gamma(k1)));
+F4a = gamcdf(y,k1,theeta1);
+f4b = ((y.^(k2-1)).*exp(-(y./theeta2)))./((theeta2^k2)*(gamma(k2)));
+F4b = gamcdf(y,k2,theeta2);
+f4c = ((y.^(k3-1)).*exp(-(y./theeta3)))./((theeta3^k3)*(gamma(k3)));
+F4c = gamcdf(y,k3,theeta3);
+figure(1)
+plot(y,F4c,'o')
+hold on 
+plot(y,F4c,'--')
+hold on
+
+%======================Partial NOMA======================%
+ep2=0.3;
+[ k1,theeta1,k2,theeta2,k3,theeta3] = mpvp( Phi,theta,lambda, Mu  );
+f4a = ((y.^(k1-1)).*exp(-(y./theeta1)))./((theeta1^k1)*(gamma(k1)));
+F4a = gamcdf(y,k1,theeta1);
+f4b = ((y.^(k2-1)).*exp(-(y./theeta2)))./((theeta2^k2)*(gamma(k2)));
+F4b = gamcdf(y,k2,theeta2);%gamcdf(y,k2,theeta2);
+f4c = ((y.^(k3-1)).*exp(-(y./theeta3)))./((theeta3^k3)*(gamma(k3)));
+F4c = gamcdf(y,k3,theeta3);
+%figure(2)
+plot(y,F4c,'x')
+hold on 
+plot(y,F4c,'-.')
+hold on
+
+xlabel('SINR Threshold(\gamma_{th})[dB]')
+ylabel('Outage Probability (P_{out})')
+%title('PDF of U4 with ipSIC and \tau = Variable');
+legend('STBC-CNOMA with \tau=0,Simulation','STBC-CNOMA with \tau=0, Analytical','STBC-CNOMA with \tau=0.3, Simulation','STBC-CNOMA with \tau=0.3,Analytical ','STBC-CNOMA with \tau=0.6,Simulation','STBC-CNOMA with\tau=0.6,Analytical','STBC-CNOMA with \tau=0.9, Simulation','STBC-CNOMA with \tau=0.9, Analytical'...
+    ,'location','southeast');
+grid on
+xlim([0 10])
+%=================================================================================================
