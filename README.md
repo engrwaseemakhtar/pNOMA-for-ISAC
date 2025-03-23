@@ -58,7 +58,7 @@ Run the MATLab file to produce the results
 
 ### Citation
 If you find the materials or code from this repository useful for your research, please cite the article as follows:
-
+```bash
 @INPROCEEDINGS{10464754,
   author={Akhtar, Muhammad Waseem and Mahmood, Aamir and Gidlund, Mikael},
   booktitle={2023 IEEE Globecom Workshops (GC Wkshps)}, 
